@@ -1,3 +1,4 @@
+const { category } = require('../models');
 const db = require('../models');
 const Product = db.product 
 
@@ -24,7 +25,16 @@ exports.create = (req,res) =>{
 
 exports.findAll = (req,res) =>{
 
-    Product.findAll().then(products =>{
+    const productName = req.query.name
+    let promise;
+    if(productName){
+        promise = Product.findAll({
+            where : {name : productName}
+        })
+    }else{
+        promise = Product.findAll()
+    }
+    promise.findAll().then(products =>{
         res.status(200).send(products)
     }).catch(err=>{
         console.log("Error while finding all Product",err.message);
