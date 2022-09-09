@@ -23,6 +23,7 @@ db.sequelize.sync({force : true}).then(() =>{
 
 //Initialize the routes
 require("./routes/category.route")(app);
+require('./routes/product.route')(app)
 
 const serverConfig = require('./configs/server.config')
 app.listen(serverConfig.PORT,()=>{
