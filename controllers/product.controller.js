@@ -9,11 +9,12 @@ exports.create = (req,res) =>{
 
         name : req.body.name,
         description : req.body.description,
-        cost : req.body.cost
+        cost : req.body.cost,
+        categoryId : req.body.categoryId
     }
     Product.create(productObj).then(productCreated =>{
         res.status(201).send({
-            message : `New Product created ${productCreated}`
+            message : `New Product created ${productCreated.name}`
         })
     }).catch(err=>{
         console.log("Error while creating product",err.message);
@@ -26,15 +27,17 @@ exports.create = (req,res) =>{
 exports.findAll = (req,res) =>{
 
     const productName = req.query.name
-    let promise;
+    var promise;
     if(productName){
         promise = Product.findAll({
-            where : {name : productName}
+            where : {
+                name : productName
+            }
         })
     }else{
         promise = Product.findAll()
     }
-    promise.findAll().then(products =>{
+    promise.then(products =>{
         res.status(200).send(products)
     }).catch(err=>{
         console.log("Error while finding all Product",err.message);
@@ -70,11 +73,15 @@ exports.update = (req,res) =>{
 
     const productId = req.params.id
 
-    Product.update(productObj,{
-        where : {id : productId},
-        returning : true
-    }).then(productUpdated=>{
-        productObj.findByPk(productId).then(productRes =>{
+    Product.update(
+        productObj,{
+            returning : true,
+            where : {
+                id : productId
+            }
+        }       
+    ).then(productUpdated=>{
+        Product.findByPk(productId).then(productRes =>{
             res.status(200).send(productRes);
         }).catch(err=>{
             res.status(500).send({
@@ -83,6 +90,9 @@ exports.update = (req,res) =>{
         })
     }).catch(err=>{
         console.log(`Error while updating product ${productObj.name}`,err.message)
+        res.status(500).send({
+            message : "Internal server error"
+        })
     })
 }
 
