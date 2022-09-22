@@ -59,4 +59,6 @@ db.user.belongsToMany(db.role, {
     otherKey : "role_id"
 })
 // ====================================
+db.ROLES = ['customer','admin']
+
 module.exports = db;  

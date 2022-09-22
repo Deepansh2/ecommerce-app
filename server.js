@@ -81,7 +81,7 @@ require('./routes/auth.route')(app);
 const serverConfig = require('./configs/server.config');
 
 app.listen(serverConfig.PORT,()=>{
-    console.log("Application is runing on PORT :",serverConfig.PORT);
+    console.log("Application is running on PORT :",serverConfig.PORT);
 })
 
 
