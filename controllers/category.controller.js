@@ -111,7 +111,7 @@ exports.delete = (req,res) =>{
         }
     }).then(result =>{
         res.status(200).send({
-            messsage : "Successfully delete the id"
+            message : "Successfully delete the id"
         })
     }).catch(err=>{
         res.status(500).send({

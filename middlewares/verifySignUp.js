@@ -55,8 +55,8 @@ const validateRole =  (req,res,next) =>{
                 })
             }
         }
-        next()
     }
+    next();
 }
 
 

@@ -77,6 +77,7 @@ function init(){
 require("./routes/category.route")(app);
 require('./routes/product.route')(app);
 require('./routes/auth.route')(app);
+require('./routes/cart.route')(app);
 
 const serverConfig = require('./configs/server.config');
 
