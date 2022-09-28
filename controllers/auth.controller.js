@@ -9,7 +9,7 @@ const Role = db.role
 const Op = db.Sequelize.Op;
 
 const jwt = require('jsonwebtoken');
-const { user } = require("../models");
+
 
 
 exports.signup = (req, res) => {
@@ -45,7 +45,7 @@ exports.signup = (req, res) => {
                 user.setRoles(roles).then(() => {
                     console.log(`>>> new user ${user.name} registration completed <<<`);
                     return res.status(201).send({
-                        message: "User successfully registerd"
+                        message: "User successfully registered"
                     })
                 })
             })

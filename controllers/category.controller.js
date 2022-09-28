@@ -11,25 +11,25 @@
 const db = require('../models');
 const Category = db.category;
 
-exports.create  = (req,res) =>{
+exports.create = (req, res) => {
 
     const category = {
-        name : req.body.name,
-        description : req.body.description
+        name: req.body.name,
+        description: req.body.description
     }
-    Category.create(category).then(category =>{
+    Category.create(category).then(category => {
         console.log(`category name : [${category.name}] got inserted into the db`);
         res.status(201).send(category);
-    }).catch(err=>{
-        console.log(`Issue in inserting the category name :[${category.name}] error message [${err.message}]`);
+    }).catch(err => {
+        console.log(`Issue in inserting the category name :[${category.name}]. error message :[${err.message}]`);
         res.status(500).send({
-            message : "Some internal server error happened"
+            message: "Some internal server error happened"
         })
     })
 }
 
 
-exports.findAll = (req,res) =>{
+exports.findAll = (req, res) => {
 
     /**
      * I need to intercept the query params and use it : ?name=Deepanshu
@@ -41,81 +41,81 @@ exports.findAll = (req,res) =>{
      * else, no filter
      */
     let promise;
-    if(categoryName){
+    if (categoryName) {
         promise = Category.findAll({
-            where : {
-                name : categoryName
+            where: {
+                name: categoryName
             }
         })
-    }else {
+    } else {
         promise = Category.findAll()
     }
 
-    promise.then(categories =>{
+    promise.then(categories => {
         res.status(200).send(categories);
-    }).catch(err =>{
+    }).catch(err => {
         res.status(500).send({
-            message : "Some internal server happened"
+            message: "Some internal server happened"
         })
     })
 }
 
-exports.findOne = (req,res) =>{
+exports.findOne = (req, res) => {
     const categoryId = req.params.id;
-    Category.findByPk(categoryId).then(categoryId=>{
+    Category.findByPk(categoryId).then(categoryId => {
         res.status(200).send(categoryId)
-    }).catch(err=>{
+    }).catch(err => {
         res.status(500).send({
-            message : "Some internal server happened"
+            message: "Some internal server happened"
         })
     })
 }
 
-exports.updateCategory = (req,res) =>{
+exports.updateCategory = (req, res) => {
 
     /**
      * I need to parse the request body, just like POST
      */
     const category = {
-        name : req.body.name,
-        description : req.body.description
+        name: req.body.name,
+        description: req.body.description
     }
 
     const categoryId = req.params.id;
 
-    Category.update(category,{
-        where : {id : categoryId},
-        returning : true
+    Category.update(category, {
+        where: { id: categoryId },
+        returning: true
     }).then(updatedCategory => {
 
-        Category.findByPk(categoryId).then(categoryRes =>{
+        Category.findByPk(categoryId).then(categoryRes => {
             res.status(200).send(categoryRes);
-        }).catch(err=>{
+        }).catch(err => {
             res.status(500).send({
-                message : "Some internal server error happened"
+                message: "Some internal server error happened"
             })
         })
 
-    }).catch(err=>{
-        console.log(`err while updating the category ${category.name}`,err.message)
+    }).catch(err => {
+        console.log(`err while updating the category ${category.name}`, err.message)
     })
 }
 
 
-exports.delete = (req,res) =>{
+exports.delete = (req, res) => {
 
     const categoryId = req.params.id;
     Category.destroy({
-        where : {
-            id : categoryId
+        where: {
+            id: categoryId
         }
-    }).then(result =>{
+    }).then(result => {
         res.status(200).send({
-            message : "Successfully delete the id"
+            message: "Successfully delete the id"
         })
-    }).catch(err=>{
+    }).catch(err => {
         res.status(500).send({
-            message : "Some Internal server happened"
+            message: "Some Internal server happened"
         })
     })
 }
